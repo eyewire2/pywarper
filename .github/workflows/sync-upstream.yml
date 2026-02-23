@@ -1,0 +1,27 @@
+# This workflow syncs the fork with the upstream repository (berenslab/pywarper)
+# For more information see: https://github.com/aormsby/Fork-Sync-With-Upstream-action
+
+name: Sync upstream
+
+on:
+    schedule:
+        - cron: "0 0 * * *" # Runs daily at midnight UTC
+    workflow_dispatch: # Allows manual triggering
+
+permissions:
+    contents: write
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Sync fork with upstream
+              uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+              with:
+                  upstream_sync_repo: berenslab/pywarper
+                  upstream_sync_branch: main
+                  target_sync_branch: main
+                  target_repo_token: ${{ secrets.GITHUB_TOKEN }}
