@@ -12,11 +12,13 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN can't push commits touching .github/workflows/; SYNC_TOKEN
+          # (Contents + Workflows write on this repo) can.
+          token: ${{ secrets.SYNC_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Add upstream remote and sync
         run: |
